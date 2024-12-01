@@ -24,7 +24,7 @@ body {
 
 .container {
   font-size: 16px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
   width: 90%;
   max-width: 34em;
   padding: 2em;
@@ -152,7 +152,8 @@ canvas {
   text-align: center;
   max-height: 200px;
   overflow-y: auto;
-  border: 3px solid #000;
+  border: 4px solid #000;
+  border-radius: 10px;
   padding: 0.5em;
 }
 
@@ -163,7 +164,7 @@ canvas {
 
 #leaderboard th,
 #leaderboard td {
-  border: 2px solid #000;
+  border: 3px solid black;
   padding: 0.5em;
 }
 
@@ -172,24 +173,24 @@ canvas {
   color: #000;
 }
 
-.back-button {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  padding: 0.5em 1em;
-  background-color: #39d78d;
-  border: 3px solid #000000;
-  color: #000;
-  border-radius: 0.3em;
-  font-size: 1em;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+.score-button {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    padding: 0.5em 1em;
+    background-color: #39d78d;
+    border: 3px solid #000000;
+    color: #000;
+    border-radius: 0.3em;
+    font-size: 1em;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.back-button:hover {
-  background-color: #2db56d;
+.score-button:hover {
+    background-color: #2db56d;
 }
 
 .audio-button {
@@ -215,7 +216,7 @@ canvas {
   pointer-events: none;
 }
 
-/* Responsive styles */
+
 @media (max-width: 600px) {
 .container {
   padding: 1em;
@@ -240,12 +241,9 @@ canvas {
   width: 2em;
 }
 
-.back-button, .audio-button {
+.score-button {
   font-size: 0.9em;
   padding: 0.4em 0.8em;
-}
-
-.back-button {
   top: 0.5em;
   right: 0.5em;
 }
@@ -253,6 +251,8 @@ canvas {
 .audio-button {
   top: 0.5em;
   left: 0.5em;
+  font-size: 0.9em;
+  padding: 0.4em 0.8em;
 }
 
 #result-text {
@@ -266,6 +266,6 @@ canvas {
 }
 
 .leaderboard-container {
-  max-height: 150px;
+  max-height: 100px;
   }
 }
