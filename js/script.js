@@ -10,15 +10,11 @@ const leaderboard = document.getElementById("leaderboard").querySelector("tbody"
 
 let options = {
   fruits: ["Redcherry", "Blueberry", "Mandarin", "Pineapple",
-          "Pomegranate", "Watermelon","Avocado","Kiwi","Apricot",
+          "Pomegranate", "Watermelon","Avocado","Kiwi",
           "Grapes"],
   animals: ["Tiger", "Elephant", "Squirrel", "Panther", "Redpanda", "Zebra",
-          "Narwhal", "Leopard", "Polarbear", "Seahorse", "Donkey", "Vulture", "Rhinoceros",
-          "Hedgehog","Hippopotamus", "Chameleon", "Porcupine","Jellyfish", "Racoon"],
-  random: ["Alexander", "Ronaldo", "Einstein", "Messi", "Haland", "Maradona", 
-          "Amazon", "Scotland", "Switzerland", "Zimbabwe", "Kazakastan", 
-          "Squirrel", "Panther", "Redpanda", "Zebra", "Blueberry", "Mandarin", "Pineapple",
-          "Pomegranate", "Watermelon","Avocado","Kiwi","Apricot"],
+          "Leopard", "Polarbear", "Seahorse", "Donkey", "Vulture", "Rhinoceros",
+           "Chameleon", "Porcupine","Jellyfish", "Racoon"],
   countries: ["Nepal", "Hungary", "Scotland", "Switzerland", "Zimbabwe", "Kazakastan", "Argentina", "Portugal",
             "Algeria", "Belgium", "Costarica", "Senegal", "Guyana", "Uruguay", "Venezuela", "Liberia",
             "Oman"]
@@ -190,25 +186,30 @@ const drawMan = (count) => {
 newGameButton.addEventListener("click", initializer);
 window.onload = initializer;
 
+
 const updateLeaderboard = (won) => {
   const name = prompt("Enter your name for the leaderboard: ");
   if (name) {
-    leaderboardData.push({ name, result: won ? "Won" : "Lost" });
+    const result = won ? "Won" : "Lost";
+    const leaderboardData = JSON.parse(localStorage.getItem("hm_leaderboard")) || [];
+    leaderboardData.push({ name, result });
+    localStorage.setItem("hm_leaderboard", JSON.stringify(leaderboardData));
     renderLeaderboard();
   }
 };
 
 const renderLeaderboard = () => {
+  const leaderboardData = JSON.parse(localStorage.getItem("hm_leaderboard")) || [];
   leaderboard.innerHTML = leaderboardData
-    .map((entry, index) => {
-      return `<tr>
-                <td>${index + 1}</td>
-                <td>${entry.name}</td>
-                <td>${entry.result}</td>
-              </tr>`;
-    })
-    .join("");
+    .map((entry, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${entry.name}</td>
+        <td>${entry.result}</td>
+      </tr>
+    `).join("");
 };
+
 
 // Audio 
 const audioControlButton = document.getElementById("audio-control");
