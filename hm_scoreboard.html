@@ -3,151 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangman Game Scoreboard</title>
+    <link rel="stylesheet" href="css/score_list.css">
+    <title>ScoreBoard</title>
     <style>
-    .back-button {
-        position: absolute;
-        top: 1em;
-        right: 1em;
-        padding: 0.5em 1em;
-        background-color: #39d78d;
-        border: 3px solid #000000;
-        color: #000;
-        border-radius: 0.3em;
-        font-size: 1em;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .back-button:hover {
-        background-color: #2db56d;
-    }  
-
-    * {
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #00c5ff;
-    }
-
-    .scoreboard-container {
-        width: 90%;
-        max-width: 600px;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        max-height: 80vh;
-        overflow: hidden;
-    }
-
-    h1 {
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    table th, table td {
-        padding: 12px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-
-    table th {
-        background-color: #39d78d;
-        color: #000;
-    }
-
-    table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    table tbody tr:hover {
-        background-color: #e1f7d5;
-    }
-
-    /* Make the table body scrollable */
-    .table-body {
-        max-height: 400px;
-        overflow-y: auto;
-    }
-
-    /* Responsiveness */
-    @media (max-width: 768px) {
-        .scoreboard-container {
+        table {
             width: 100%;
-            padding: 15px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        table th, table td {
-            padding: 8px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 16px;
         }
 
-        .back-button {
-            font-size: 0.9em;
-            padding: 0.4em 0.8em;
+        th {
+            background-color: #39d78d;
+            color: #ffffff;
+            font-weight: bold;
         }
-    }
 
+        td {
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .leaderboard-container {
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+            background-color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .leaderboard-container button {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .leaderboard-container button:hover {
+            background-color: #388e3c;
+        }
     </style>
 </head>
 <body>
     <div class="buttons">
-        <a href="index.html" class="back-button">Back</a>
+        <a href="categories.php" class="back-button">Back</a>
     </div>
-    <div class="scoreboard-container">
-        <h1>Hangman Game Scoreboard</h1>
-        <div class="table-body">
+    <div class="container">
+        <h1>ScoreBoard</h1>
+        <ul class="category-list">
+            <li>
+                <span>HangMan</span>
+                <button class="btn" onclick="showLeaderboard('hm_leaderboard', ['Name', 'Result'], ['name', 'result'])">View Details</button>
+            </li>
+            <li>
+                <span>Card Memory</span>
+                <button class="btn" onclick="showLeaderboard('memory_leaderboard', ['Name', 'Flips', 'Time Left'], ['player_name', 'flips', 'time_left'])">View Details</button>
+            </li>
+            <li>
+                <span>Number Guessing</span>
+                <button class="btn" onclick="showLeaderboard('numguess_leaderboard', ['Name', 'Score'], ['player_name', 'score'])">View Details</button>
+            </li>
+        </ul>
+
+        <div id="leaderboard-container" class="leaderboard-container hidden">
+            <button onclick="hideLeaderboard()">Back to Categories</button>
             <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $conn = new mysqli("localhost", "root", "", "hangman");
-
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-
-                    // Fetch data from the leaderboard table
-                    $sql = "SELECT name, result FROM hm_leaderboard ORDER BY id DESC";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                    <td>{$row['name']}</td>
-                                    <td>{$row['result']}</td>
-                                  </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No records found</td></tr>";
-                    }
-
-                    $conn->close();
-                    ?>
-                </tbody>
+                <thead id="leaderboard-header"></thead>
+                <tbody id="leaderboard-body"></tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        function showLeaderboard(key, headers, fields) {
+            // Populate table headers
+            const headerRow = headers.map(header => `<th>${header}</th>`).join('');
+            document.getElementById('leaderboard-header').innerHTML = `<tr>${headerRow}</tr>`;
+
+            // Fetch data from localStorage
+            const leaderboardData = JSON.parse(localStorage.getItem(key)) || [];
+
+            // Populate table rows
+            const rows = leaderboardData.map((entry, index) => {
+                const rowData = fields.map(field => `<td>${entry[field]}</td>`).join('');
+                return `<tr><td>${index + 1}</td>${rowData}</tr>`;
+            }).join('');
+            document.getElementById('leaderboard-body').innerHTML = rows;
+
+            // Show leaderboard container and hide category list
+            document.querySelector('.category-list').classList.add('hidden');
+            document.getElementById('leaderboard-container').classList.remove('hidden');
+        }
+
+        function hideLeaderboard() {
+            // Hide leaderboard container and show category list
+            document.getElementById('leaderboard-container').classList.add('hidden');
+            document.querySelector('.category-list').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
